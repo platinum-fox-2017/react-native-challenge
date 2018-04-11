@@ -4,7 +4,8 @@ import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation'; /
 import Main from './src/screens/Main'
 import Xkcd from './src/screens/Xkcd'
 import PokeCardDetail from './src/components/PokeCardDetail'
-
+import { Provider } from 'react-redux'
+import { store } from './src/redux/index.js'
 
 const RootStack = StackNavigator(
   {
@@ -49,7 +50,7 @@ const XkcdStack = StackNavigator(
   }
 )
 
-export default TabNavigator(
+const Tab = TabNavigator(
   {
     Root: { screen: RootStack },
     Xkcd: { screen: XkcdStack }
@@ -66,8 +67,11 @@ export default TabNavigator(
   }
 )
 
-// export default class App extends React.Component {
-//   render() {
-//     return <RootStack />;
-//   }
-// }
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Tab />
+      </Provider>);
+  }
+}

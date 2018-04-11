@@ -7,6 +7,8 @@ import { StyleSheet,
   FlatList
 } from 'react-native';
 import { withNavigation } from 'react-navigation'
+// import { connect } from 'react-redux'
+
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import PokeCardList from './PokeCardList'
