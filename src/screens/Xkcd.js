@@ -9,6 +9,11 @@ import { StyleSheet,
 } from 'react-native';
 import axios from 'axios'
 
+// Redux
+import { bindActionCreators } from 'redux'
+import { getComic, getCards } from '../redux/action.js'
+import { connect } from 'react-redux'
+
 class Xkcd extends React.Component {
   constructor(){
     super()
@@ -23,48 +28,62 @@ class Xkcd extends React.Component {
   }
 
   componentDidMount() {
-    this.loadComic()
+    // this.loadComic()
+    this.props.getComic()
   }
 
   loadComic = () => {
-    axios.get('http://xkcd.com/info.0.json')
-      .then(resp => {
-        this.setState({
-          data: resp.data,
-          isLoaded: true
-        })
-      })
+    // axios.get('http://xkcd.com/info.0.json')
+    //   .then(resp => {
+    //     this.setState({
+    //       data: resp.data,
+    //       isLoaded: true
+    //     })
+    //   })
   }
 
   render () {
-    if (this.state.data.img) {
-      return (
-        <View
-          style={ styles.xkcdView }
-        >
-          <Text>{ this.state.data.safe_title }</Text>
-          <Image
-            style={{ width: 300 , height: 300 }}
-            source={{ uri: this.state.data.img}}
-          />
-          <Text
-            style={ styles.xkcdText }
-          >
-            { this.state.data.alt }
-          </Text>
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      )
-    }
+    return (
+      <View style={ styles.xkcdView }>
+        <Text>{this.props.test}</Text>
+        { this.props.isLoading ? (
+          <Text>Loading</Text>
+        ) : (
+          <View>
+            <Text>{ this.props.comic.safe_title }</Text>
+            <Image
+              style={{ width: 300 , height: 300 }}
+              source={{ uri: this.props.comic.img}}
+            />
+            <Text
+              style={ styles.xkcdText }
+            >
+              { this.props.comic.alt }
+            </Text>
+          </View>
+        ) }
+      </View>
+    )
   }
 }
 
-export default Xkcd;
+const stateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    err: state.err,
+    cards: state.cards,
+    comic: state.comic,
+    test: state.test
+  }
+}
+
+const dispatchToProps = (dispatch) => bindActionCreators({
+  getCards,
+  getComic
+}, dispatch)
+
+export default connect(stateToProps,dispatchToProps)(Xkcd);
+
 
 const styles = StyleSheet.create({
   xkcdView: {

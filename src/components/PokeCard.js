@@ -7,11 +7,15 @@ import { StyleSheet,
   FlatList
 } from 'react-native';
 import { withNavigation } from 'react-navigation'
-// import { connect } from 'react-redux'
 
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import PokeCardList from './PokeCardList'
+
+// Redux
+import { bindActionCreators } from 'redux'
+import { getComic, getCards } from '../redux/action.js'
+import { connect } from 'react-redux'
 
 class PokeCard extends React.Component {
   constructor() {
@@ -26,28 +30,29 @@ class PokeCard extends React.Component {
   }
 
   componentDidMount() {
-    this.dataLoad()
+    // this.dataLoad()
+    this.props.getCards()
   }
 
   dataLoad = () => {
-    axios.get('https://api.pokemontcg.io/v1/cards?types=fire&page=1',
-    {headers: {
-      'page-size': 10,
-      count: 30
-    }}).then(resp => {
-        this.setState({
-          data: resp.data,
-          cards: resp.data.cards,
-          isLoaded: true
-        }, () => {
-          console.log(this.state.data);
-          console.log(this.state.cards);
-        })
-      }).catch(err => {
-        this.setState({
-          err: err.message
-        })
-      })
+    // axios.get('https://api.pokemontcg.io/v1/cards?types=fire&page=1',
+    // {headers: {
+    //   'page-size': 10,
+    //   count: 30
+    // }}).then(resp => {
+    //     this.setState({
+    //       data: resp.data,
+    //       cards: resp.data.cards,
+    //       isLoaded: true
+    //     }, () => {
+    //       console.log(this.state.data);
+    //       console.log(this.state.cards);
+    //     })
+    //   }).catch(err => {
+    //     this.setState({
+    //       err: err.message
+    //     })
+    //   })
   }
 
   _keyExtractor = (item, index) => item.id
@@ -56,8 +61,6 @@ class PokeCard extends React.Component {
     this.setState({
       selectedCard: item
     }, () => {
-      console.log(this.state.selectedCard);
-      console.log(this);
       this.props.navigation.navigate('Details', {
         selectedCard: item
       })
@@ -82,12 +85,16 @@ class PokeCard extends React.Component {
           { this.state.err }
         </Text>
         <View>
-          <FlatList
-            data={ this.state.cards }
-            extraData={ this.state }
-            keyExtractor={ this._keyExtractor }
-            renderItem={ this._renderItem }
-          />
+          { this.props.isLoading ? (
+            <Text>Loading</Text>
+          ) : (
+            <FlatList
+              data={ this.props.cards }
+              extraData={ this.state }
+              keyExtractor={ this._keyExtractor }
+              renderItem={ this._renderItem }
+            />
+          ) }
         </View>
 
       </View>
@@ -95,14 +102,21 @@ class PokeCard extends React.Component {
   }
 }
 
-// <FlatList
-//   data={ this.state.cards }
-//   extraData={ this.state }
-//   keyExtractor={ this._keyExtractor }
-//   renderItem={ this._renderItem }
-// />
+const stateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    err: state.err,
+    cards: state.cards,
+    test: state.test
+  }
+}
 
-export default withNavigation(PokeCard);
+const dispatchToProps = (dispatch) => bindActionCreators({
+  getCards,
+  getComic
+}, dispatch)
+
+export default withNavigation(connect(stateToProps,dispatchToProps)(PokeCard));
 
 const styles = StyleSheet.create({
   Container: {

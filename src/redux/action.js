@@ -44,13 +44,11 @@ export function getCards (source) {
 
 export function getComic () {
   return (dispatch) => {
-    dispatch(actComic({
-      articles: [],
-      pages: 0
-    }))
+    dispatch(actComic({}))
     dispatch(actComicLoad())
     const url = 'http://xkcd.com/info.0.json'
     axios.get(url).then(response => {
+      console.log(response);
       dispatch(actComic(response.data))
     }).catch(err => {
       dispatch(actComicErr(err))

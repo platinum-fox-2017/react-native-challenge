@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PokeCard from '../components/PokeCard'
+
+// Redux
 import { bindActionCreators } from 'redux'
 import { getComic, getCards } from '../redux/action.js'
-
 import { connect } from 'react-redux'
 
 class Main extends React.Component {
