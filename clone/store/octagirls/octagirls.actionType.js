@@ -1,0 +1,1 @@
+export const OCTAGIRL_SUCESS = 'OCTAGIRL_SUCCESS'

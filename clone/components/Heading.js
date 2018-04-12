@@ -5,7 +5,7 @@ export default class Kepala extends React.Component {
   render() {
     return (
       <View style={ styles.bgLayer }>
-        <Text> this is heading </Text>
+        {/* <Text> this is heading </Text> */}
       </View>
     )
   }
@@ -13,8 +13,10 @@ export default class Kepala extends React.Component {
 
 const styles = StyleSheet.create({
   bgLayer: {
-    backgroundColor: '#262526',
+    backgroundColor: '#252625',
     width: '100%',
-    height: 40,
+    height: 45,
+    borderBottomWidth: 3,
+    borderBottomColor: 'silver',
   }
 })

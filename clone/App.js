@@ -1,33 +1,60 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Heading from './components/Heading'
-// import garfield from 'garfield'
-
-export default class App extends React.Component {
-  render() {
-    // let garf = garfied.random()
-    return (
-      <View style={{ flex: 1 }}>
-        <Heading />
-        <View style={styles.container}>
-          {/* <Text> {garf} </Text> */}
-          <Text style={styles.list}>Open up App.js to start working on your app!</Text>
-          <Text>Changes make will automatically reload.</Text>
-          <Text>Shake your booty to open the developer menu.</Text>
-        </View>
-      </View>
-    );
-  }
-}
+import React, { Component } from 'react';
+import { Provider } from 'react-redux'
+import store from './store/store'
+import { StyleSheet } from 'react-native'
+import { StackNavigator} from 'react-navigation'
+import Fighters from './screens/Fighters'
+import FighterStats from './screens/FighterStats'
+import Octagirls from './screens/Octagirls'
+import Home from './screens/Home'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  list: {
-    fontSize: 20,
+  header: {
+    backgroundColor: '#252625',
   }
-});
+})
+
+const RootStack = StackNavigator({
+  Home: {
+    screen: Home,
+    navigationOptions: {
+      headerStyle: styles.header,
+      title: "Home"
+    },
+    headerTitleStyle: {
+      color: '#fff'
+    },
+    headerBackTitleStyle: {
+      color: '#fff'
+    },
+    headerTintColor: '#fff'
+  },
+  Fighters: {
+    screen: Fighters,
+    navigationOptions: {
+      title: "Fighters"
+    }
+  },
+  FighterStats: {
+    screen: FighterStats,
+  },
+  Octagirls: {
+    screen: Octagirls,
+    navigationOptions: {
+      title: "Octagon Girls"
+    }
+  },
+}, {
+  initialRouteName: 'Home'
+})
+
+
+export default class App extends React.Component {
+  render () {
+    return (
+    <Provider store={ store }>
+      <RootStack />
+    </Provider>
+    )
+  }
+}
