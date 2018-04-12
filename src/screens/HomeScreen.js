@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 import Weather from '../components/Weather'
-
 
 class HomeScreen extends Component {
   static navigationOptions = {

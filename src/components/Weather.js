@@ -9,13 +9,10 @@ import { Text,
   FlatList } from 'react-native';
 import axios from 'axios'
 
-import moment from 'moment'
-
+// Components
 import WeatherList from './WeatherList'
 
 class Weather extends Component {
-  _keyExtractor = (item, index) => item.time;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +25,6 @@ class Weather extends Component {
   getWeatherData = (latitude,longtitude) => {
     axios.get('https://api.darksky.net/forecast/b842ca00e6521c68a9b02df4a39ba74e/' + latitude + ',' + longtitude)
       .then((response) => {
-        console.log(response.data.daily.data)
         this.setState({
           datasDaily: response.data.daily.data
         })
@@ -37,12 +33,11 @@ class Weather extends Component {
         Alert.alert(
           'Alert',
           'ERRRRR',
-          [
-            {text: 'OK'},
-          ],
+          [{text: 'OK'}],
           { cancelable: false }
         )
-      })
+      }
+    )
   }
 
   handlePress = () => {
@@ -62,35 +57,36 @@ class Weather extends Component {
           color="#841584"
         />
 
-        {/* <View style={{height: 350}}>
-        <ScrollView>
         {
-          (this.state.datasDaily.length < 1) ? '' :
-            this.state.datasDaily.map((data) =>
-            <View key={ data.time }>
-              <Text>{ data.time }</Text>
-              <Text>{ data.summary }</Text>
-              <Text>{ data.icon }</Text>
-              <Text>{ `Sunrise Time: ${data.sunriseTime}` }</Text>
-              <Text>{ `Sunset Time: ${data.sunsetTime}` }</Text>
-              <Text>{ `Pressure: ${data.pressure}` }</Text>
-              <Text>{ `Pressure: ${data.pressure}` }</Text>
-            </View>
-          )
-        }
-        </ScrollView>
-        </View> */}
-        <WeatherList />
-        <View style={{height: 350}}>
-        <FlatList
-          data={this.state.datasDaily}
-          keyExtractor={(item, index) => item.time.toString()}
-          renderItem={({item}) =>
-            <WeatherList item={ item } />
+        /* <View style={{height: 350}}>
+          <ScrollView>
+          {
+            (this.state.datasDaily.length < 1) ? '' :
+              this.state.datasDaily.map((data) =>
+              <View key={ data.time }>
+                <Text>{ data.time }</Text>
+                <Text>{ data.summary }</Text>
+                <Text>{ data.icon }</Text>
+                <Text>{ `Sunrise Time: ${data.sunriseTime}` }</Text>
+                <Text>{ `Sunset Time: ${data.sunsetTime}` }</Text>
+                <Text>{ `Pressure: ${data.pressure}` }</Text>
+                <Text>{ `Pressure: ${data.pressure}` }</Text>
+              </View>
+            )
           }
-        />
-        </View>
+          </ScrollView>
+        </View> */
+        }
 
+        <View style={{height: 400}}>
+          <FlatList
+            data={this.state.datasDaily}
+            keyExtractor={(item, index) => item.time.toString()}
+            renderItem={({item}) =>
+              <WeatherList item={ item } />
+            }
+          />
+        </View>
       </View>
     );
   }
