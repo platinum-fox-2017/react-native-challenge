@@ -7,7 +7,11 @@ import { Text,
   Alert,
   ScrollView,
   FlatList } from 'react-native';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 import axios from 'axios'
+
+import { loadDataF } from '../store/Weathers/weather.action'
 
 // Components
 import WeatherList from './WeatherList'
@@ -22,28 +26,29 @@ class Weather extends Component {
     };
   }
 
-  getWeatherData = (latitude,longtitude) => {
-    axios.get('https://api.darksky.net/forecast/b842ca00e6521c68a9b02df4a39ba74e/' + latitude + ',' + longtitude)
-      .then((response) => {
-        this.setState({
-          datasDaily: response.data.daily.data
-        })
-      })
-      .catch((err) => {
-        Alert.alert(
-          'Alert',
-          'ERRRRR',
-          [{text: 'OK'}],
-          { cancelable: false }
-        )
-      }
-    )
-  }
+  // getWeatherData = (latitude,longtitude) => {
+  //   axios.get('https://api.darksky.net/forecast/b842ca00e6521c68a9b02df4a39ba74e/' + latitude + ',' + longtitude)
+  //     .then((response) => {
+  //       this.setState({
+  //         datasDaily: response.data.daily.data
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       Alert.alert(
+  //         'Alert',
+  //         'ERRRRR',
+  //         [{text: 'OK'}],
+  //         { cancelable: false }
+  //       )
+  //     }
+  //   )
+  // }
 
   handlePress = () => {
     const latitude = this.state.latitude
     const longtitude = this.state.longtitude
-    this.getWeatherData(latitude,longtitude)
+    this.props.loadDataF(latitude,longtitude)
+    // this.getWeatherData(latitude,longtitude)
   }
 
   render() {
@@ -78,15 +83,15 @@ class Weather extends Component {
         </View> */
         }
 
-        <View style={{height: 400}}>
+        {<View style={{height: 400}}>
           <FlatList
-            data={this.state.datasDaily}
+            data={this.props.weatherList}
             keyExtractor={(item, index) => item.time.toString()}
             renderItem={({item}) =>
               <WeatherList item={ item } />
             }
           />
-        </View>
+        </View>}
       </View>
     );
   }
@@ -102,4 +107,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Weather;
+const mapStateToProps = state => {
+  return {
+    weatherList: state.weatherList
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({
+    loadDataF,
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Weather)

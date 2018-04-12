@@ -20,4 +20,5 @@ class HomeScreen extends Component {
   }
 }
 
-export default HomeScreen;
+
+export default HomeScreen

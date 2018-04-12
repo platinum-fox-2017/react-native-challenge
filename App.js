@@ -1,4 +1,6 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from './src/store/index'
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './src/screens/HomeScreen'
 import About from './src/screens/About'
@@ -30,7 +32,11 @@ const RootStack = StackNavigator({
 
 export default class App extends React.Component {
   render() {
-    return <RootStack />;
+    return (
+      <Provider store={store}>
+        <RootStack />
+      </Provider>
+    )
   }
 }
 
