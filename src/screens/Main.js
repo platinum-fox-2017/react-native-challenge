@@ -45,10 +45,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5
-  }
 })

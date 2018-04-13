@@ -1,5 +1,7 @@
 import React from 'react'
-import { StyleSheet,
+import {
+  StyleSheet,
+  Dimensions,
   Text,
   View,
   TouchableOpacity,
@@ -78,13 +80,13 @@ class PokeCard extends React.Component {
   render () {
     return (
       <View style={ styles.Container }>
-        <Text>
+        <Text style={ styles.title }>
           Fire Cards
         </Text>
-        <Text>
+        <Text style={styles.error}>
           { this.state.err }
         </Text>
-        <View>
+        <View style={styles.listContainer}>
           { this.props.isLoading ? (
             <Text>Loading</Text>
           ) : (
@@ -118,12 +120,29 @@ const dispatchToProps = (dispatch) => bindActionCreators({
 
 export default withNavigation(connect(stateToProps,dispatchToProps)(PokeCard));
 
+let { height, width } = Dimensions.get('window')
 const styles = StyleSheet.create({
   Container: {
-    flex: 1,
+    height: height,
+    width: width,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20
+    backgroundColor: '#211f1d',
+    paddingTop: 45
+  },
+  listContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    color: 'white',
+    padding: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  error: {
+    color: '#c92320'
   },
   loadButton: {
     display: 'flex',

@@ -20,7 +20,8 @@ const RootStack = StackNavigator(
     initialRouteName: 'Home',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#dd3300'
+        backgroundColor: '#dd3300',
+        height: 40,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
@@ -40,7 +41,8 @@ const XkcdStack = StackNavigator(
     initialRouteName: 'Latest',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#dd3300'
+        backgroundColor: '#dd3300',
+        height: 40,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
