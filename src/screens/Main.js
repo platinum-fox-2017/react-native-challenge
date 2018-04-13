@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 class Main extends React.Component {
   static navigationOptions = {
-    title: 'Fire Pokemon'
+    title: 'Pokemon Card Search'
   }
 
   render () {

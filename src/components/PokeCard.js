@@ -2,16 +2,18 @@ import React from 'react'
 import {
   StyleSheet,
   Dimensions,
-  Text,
+  Text, TextInput,
   View,
   TouchableOpacity,
   Image,
   FlatList
 } from 'react-native';
 import { withNavigation } from 'react-navigation'
-
 import PropTypes from 'prop-types'
 import axios from 'axios'
+
+// comp
+import SearchForm from './SearchForm'
 import PokeCardList from './PokeCardList'
 
 // Redux
@@ -32,29 +34,7 @@ class PokeCard extends React.Component {
   }
 
   componentDidMount() {
-    // this.dataLoad()
     this.props.getCards()
-  }
-
-  dataLoad = () => {
-    // axios.get('https://api.pokemontcg.io/v1/cards?types=fire&page=1',
-    // {headers: {
-    //   'page-size': 10,
-    //   count: 30
-    // }}).then(resp => {
-    //     this.setState({
-    //       data: resp.data,
-    //       cards: resp.data.cards,
-    //       isLoaded: true
-    //     }, () => {
-    //       console.log(this.state.data);
-    //       console.log(this.state.cards);
-    //     })
-    //   }).catch(err => {
-    //     this.setState({
-    //       err: err.message
-    //     })
-    //   })
   }
 
   _keyExtractor = (item, index) => item.id
@@ -77,15 +57,22 @@ class PokeCard extends React.Component {
     />
   )
 
+  _renderHeader = () => (
+    <View>
+      <Text style={ styles.title }>
+        Search by card's name, or the set.
+      </Text>
+      <Text style={styles.error}>
+        { this.state.err }
+      </Text>
+      <SearchForm/>
+    </View>
+
+  )
+
   render () {
     return (
       <View style={ styles.Container }>
-        <Text style={ styles.title }>
-          Fire Cards
-        </Text>
-        <Text style={styles.error}>
-          { this.state.err }
-        </Text>
         <View style={styles.listContainer}>
           { this.props.isLoading ? (
             <Text>Loading</Text>
@@ -94,11 +81,11 @@ class PokeCard extends React.Component {
               data={ this.props.cards }
               extraData={ this.state }
               keyExtractor={ this._keyExtractor }
+              ListHeaderComponent={this._renderHeader}
               renderItem={ this._renderItem }
             />
           ) }
         </View>
-
       </View>
     )
   }

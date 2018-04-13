@@ -1,6 +1,7 @@
 import {
   GET_CARD_OK, GET_CARD_LOAD, GET_CARD_ERR,
-  GET_XKCD_OK, GET_XKCD_LOAD, GET_XKCD_ERR
+  GET_XKCD_OK, GET_XKCD_LOAD, GET_XKCD_ERR,
+  XKCD_AMOUNT
 } from './actionTypes.js'
 // REDUCERS
 export default function reducer (state={
@@ -8,6 +9,7 @@ export default function reducer (state={
   err: '',
   cards: [],
   comic: {},
+  comicAmount: 0,
   test: 'Connected to Redux! :v'
 }, action) {
   switch (action.type) {
@@ -49,6 +51,12 @@ export default function reducer (state={
         ...state,
         isLoading: false,
         err: action.payload.message
+      }
+    }
+    case XKCD_AMOUNT: {
+      return {
+        ...state,
+        comicAmount: action.payload
       }
     }
     default: {

@@ -1,81 +1,51 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {
   StyleSheet, Dimensions,
   View, Image, Text,
   TouchableOpacity,
   ScrollView, FlatList,
-} from 'react-native';
+} from 'react-native'
+import PropTypes from 'prop-types'
 
 // Redux
 import { bindActionCreators } from 'redux'
 import { getComic, getCards } from '../redux/action.js'
 import { connect } from 'react-redux'
 
-// comp
-import XkcdControl from '../components/XkcdControl'
-
-class Xkcd extends React.Component {
-  constructor(){
-    super()
-    this.state = {
-      data: {},
-      isLoaded: false
-    }
-  }
-
-  static navigationOptions = {
-    title: 'Xkcd'
-  }
-
-  componentDidMount() {
-    this.home()
-  }
-
-  home = () => {
-    this.props.getComic('home')
-  }
-
-  next = () => {
-    if (this.props.isLoading === false) {
-      if (this.props.comicAmount === this.props.comic.num) {
-        return
-      }
-      this.props.getComic('next')
-    }
-  }
-
-  previous = () => {
-    if (this.props.isLoading === false) {
-      if (this.props.comic.num < 0) {
-        return
-      }
-      this.props.getComic('prev')
-    }
-  }
-
+class XkcdControl extends React.Component {
   render () {
     return (
-      <View style={ styles.xkcdView }>
-        { this.props.isLoading ? (
-          <View style={ styles.title }>
-            <Text style={styles.titleText}>Loading</Text>
-          </View>
-        ) : (
-          <ScrollView contentContainerStyle={ styles.container }>
-            <View style={ styles.title }>
-              <Text style={styles.titleText}>{ this.props.comic.safe_title }</Text>
-            </View>
-            <XkcdControl />
-            <View style={ styles.alt }>
-              <Text
-                style={ styles.altText }
-              >
-                { this.props.comic.alt }
-              </Text>
-            </View>
-          </ScrollView>
-        ) }
+      <View style={ styles.body }>
+        <Image
+          style={{ width: 300 , height: 300 }}
+          source={{ uri: this.props.comic.img}}
+        />
+        <View style={ styles.control }>
+          <TouchableOpacity
+            style={ styles.controlTouchables }
+            onPress={ this.previous }
+          >
+            <Text style={ styles.controlText }>
+              Back
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ styles.controlTouchables }
+            onPress={ this.home }
+          >
+            <Text style={ styles.controlText }>
+              Home
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ styles.controlTouchables }
+            onPress={ this.next }
+          >
+            <Text style={ styles.controlText }>
+              Next
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -97,7 +67,7 @@ const dispatchToProps = (dispatch) => bindActionCreators({
   getComic
 }, dispatch)
 
-export default connect(stateToProps,dispatchToProps)(Xkcd);
+export default connect(stateToProps,dispatchToProps)(XkcdControl);
 
 let { height, width } = Dimensions.get('window')
 const styles = StyleSheet.create({
